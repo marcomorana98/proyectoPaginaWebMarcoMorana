@@ -10,10 +10,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 const connection = mysql.createConnection({
-	host     : 'localhost',
-	user     : 'root',
-	password : 'MySQLPassword1.',
-	database : 'login'
+	host     : '190.173.113.175',
+	user     : 'worker',
+	password : '123',
+	database : 'karpathia'
 });
 
 app.use(session({
@@ -35,7 +35,7 @@ app.post('/login', (req, res) => {
     let password = req.body.password;
     if (username && password) {
       // Execute SQL query that'll select the account from the database based on the specified username and password
-      connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+      connection.query('SELECT * FROM usuarios WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
         // If there is an issue with the query, output the error
         if (error) throw error;
         // If the account exists
@@ -44,7 +44,12 @@ app.post('/login', (req, res) => {
           req.session.loggedin = true;
           req.session.username = username;
           // Redirect to home page
-          res.redirect('/home');
+          if(results[0].userType == 1){
+            res.redirect('/dashboard');
+          }
+          else{
+            res.redirect('/album')
+          }
         } else {
           res.send('Incorrect Username and/or Password!');
         }			
@@ -56,18 +61,13 @@ app.post('/login', (req, res) => {
     }
   });
 
-  app.get('/home', function(request, response) {
-    // If the user is loggedin
-    if (request.session.loggedin) {
-      // Output username
-      response.send('Welcome back, ' + request.session.username + '!');
-    } else {
-      // Not logged in
-      response.send('Please login to view this page!');
-    }
-    response.end();
+  app.get('/dashboard', function(request, response) {
+    response.sendFile(__dirname + '/dashboard.html')
   });
 
+  app.get('/album', function (req, res) {
+    res.sendFile(__dirname + '/album.html')
+})
 
 app.listen(3000)
   
