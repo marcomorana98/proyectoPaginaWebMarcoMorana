@@ -1,4 +1,6 @@
-/* globals Chart:false, feather:false */
+
+
+window.alert("Algo");
 
 
 
