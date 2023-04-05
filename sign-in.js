@@ -44,7 +44,7 @@ app.post('/login', (req, res) => {
           req.session.loggedin = true;
           req.session.username = username;
           // Redirect to home page
-          if(results[0].userType == 1){
+          if(results[0].usertype == 1){
             res.redirect('/dashboard');
           }
           else{
