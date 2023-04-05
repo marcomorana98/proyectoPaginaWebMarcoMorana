@@ -7,7 +7,7 @@ const path = require('path');
 
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.set('view engine', 'ejs');
 
 const connection = mysql.createConnection({
 	host     : '190.173.113.175',
@@ -66,7 +66,10 @@ app.post('/login', (req, res) => {
   });
 
   app.get('/album', function (req, res) {
-    res.sendFile(__dirname + '/album.html')
+    connection.query('SELECT * FROM obras', function(error, arrayObras, fields){
+      res.render('album', {foo: arrayObras});
+  },
+  )
 })
 
 app.listen(3000)
