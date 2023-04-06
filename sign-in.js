@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 
 const connection = mysql.createConnection({
-	host     : '190.173.113.175',
+	host     : '190.173.68.7',
 	user     : 'worker',
 	password : '123',
 	database : 'karpathia'
