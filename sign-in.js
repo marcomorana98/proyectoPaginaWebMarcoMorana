@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 
 const connection = mysql.createConnection({
-	host     : '190.173.113.175',
+	host     : '190.173.68.7',
 	user     : 'worker',
 	password : '123',
 	database : 'karpathia'
@@ -44,7 +44,7 @@ app.post('/login', (req, res) => {
           req.session.loggedin = true;
           req.session.username = username;
           // Redirect to home page
-          if(results[0].usertype == 1){
+          if(results[0].userType == 1){
             res.redirect('/dashboard');
           }
           else{
@@ -61,8 +61,11 @@ app.post('/login', (req, res) => {
     }
   });
 
-  app.get('/dashboard', function(request, response) {
-    response.sendFile(__dirname + '/dashboard.html')
+  app.get('/dashboard', function(request, res) {
+    connection.query('SELECT u.legajo, a.`hora entrada` as entrada, a.`hora salida` as salida, concat(o.direccion," ", o.altura) as direccion, concat(u.nombre, " ", u.apellido) as nombre from asistencias as a join usuarios as u on a.idobrero=u.idUsuarios join obras as o on a.idobra=o.idObra', function(error, asistencias, fields){
+      res.render('dashboard', {foo: asistencias});
+  },
+  )
   });
 
   app.get('/album', function (req, res) {
