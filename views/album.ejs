@@ -120,9 +120,12 @@
             <div class="card-body">
               <p class="card-text"><%= foo[i].direccion %> <%= foo[i].altura %></p>
               <div class="boton-de-asistencia">
-                <form action = "asistir" method = "POST">
+                <form action = "test" method = "POST">
+                  <input type="text" hidden name="obra" value=<%= foo[i].direccion %>></input>
+                  <input type="text" hidden name="fecha" value=<%= new Date().getDay() %>></input>
+                  <input type="text" hidden name="hora" value=<%= new Date().getHours() %>></input>
                   <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Dar Asistencia</button>
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">Dar Asistencia</button>
                   </div>
                 </form>
               </div>

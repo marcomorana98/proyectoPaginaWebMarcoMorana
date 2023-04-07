@@ -33,6 +33,7 @@ app.post('/login', (req, res) => {
     // Insert Login Code Here
     let username = req.body.username;
     let password = req.body.password;
+    console.log(req.body)
     if (username && password) {
       // Execute SQL query that'll select the account from the database based on the specified username and password
       connection.query('SELECT * FROM usuarios WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
@@ -73,6 +74,18 @@ app.post('/login', (req, res) => {
       res.render('album', {foo: arrayObras});
   },
   )
+  
+  })
+
+  app.post('/test', function (req, res) {
+    let obra = req.body.obra;
+    let fecha = req.body.fecha;
+    let hora = req.body.hora
+    let obrero = req.session.username
+    console.log(req.body)
+    connection.query('INSERT INTO asistencias VALUES (?, ?, ?, ?)', [obra, obrero, fecha, hora, hora], function(error, results, fields) {
+      res.redirect('/album');
+  })
 })
 
 app.listen(3000)
