@@ -80,13 +80,37 @@ app.post('/login', (req, res) => {
   app.post('/test', function (req, res) {
     let obra = req.body.obra;
     let fecha = req.body.fecha;
-    let hora = req.body.hora
-    let obrero = req.session.username
-    console.log(req.body)
-    connection.query('INSERT INTO asistencias VALUES (?, ?, ?, ?)', [obra, obrero, fecha, hora, hora], function(error, results, fields) {
-      res.redirect('/album');
-  })
-})
+    let hora = req.body.hora;
+    let obrero = req.session.username;
+    let lat = req.body.latitud;
+    let long = req.body.longitud;
+    let latUser = req.body.userLatitud;
+    let longUser = req.body.userLongitud;
+    console.log(obrero);
+    console.log(latUser);
+    const R = 6371e3; // metres
+    const φ1 = lat * Math.PI/180; // φ, λ in radians
+    const φ2 = latUser * Math.PI/180;
+    const Δφ = (latUser-lat) * Math.PI/180;
+    const Δλ = (longUser-long) * Math.PI/180;
+
+    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+              Math.cos(φ1) * Math.cos(φ2) *
+              Math.sin(Δλ/2) * Math.sin(Δλ/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    const d = R * c; // in metres
+    console.log(d);
+    if(d < 500){
+      console.log(req.body);
+      connection.query("INSERT INTO asistencias VALUES (?,?,?,?,?)", [obra, obrero, fecha, hora, hora],function(error, results, fields) {
+        if(error) console.log(error);
+        res.redirect('/album');
+      })
+    }else{
+      console.log("Estas muy lejos");
+    }
+  });
 
 app.listen(3000)
   
