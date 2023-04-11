@@ -10,54 +10,7 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/album/">
 
-    <script defer>
-
-      const date = new Date();
-      let day = date.getDate();
-      let month = date.getMonth() + 1;
-      let year = date.getFullYear();
-
-      let currentDate = `${year}-${month}-${day}`;
-      console.log(currentDate);
-
-      
-    const options = {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0,
-    };
-
-    function success(pos) {
-      const crd = pos.coords;
-
-      console.log("Your current position is:");
-      console.log(`Latitude : ${crd.latitude}`);
-      console.log(`Longitude: ${crd.longitude}`);
-      console.log(`More or less ${crd.accuracy} meters.`);
-
-      document.querySelectorAll(".userLatitud").forEach(element => {
-        element.value = crd.latitude;
-      });
-      document.querySelectorAll(".userLongitud").forEach(element => {
-        element.value = crd.longitude;
-      });
-
-
-      //document.getElementById("test").value = crd.latitude;
-      document.querySelectorAll(".fecha").forEach(element => {
-        element.value = currentDate;
-      });
-    }
-
-    function error(err) {
-      console.warn(`ERROR(${err.code}): ${err.message}`);
-    }
-
-    navigator.geolocation.getCurrentPosition(success, error, options);
-      
-
-
-    </script>
+    
 
     
 
@@ -167,14 +120,12 @@
             <div class="card-body">
               <p class="card-text"><%= foo[i].direccion %> <%= foo[i].altura %></p>
               <div class="boton-de-asistencia">
-                <form action = "test" method = "POST">
+                <form action = "obras" method = "POST">
                   <input type="text" hidden name="obra" value=<%= foo[i].direccion %>></input>
-                  <input class="fecha" name="fecha"></input>
+                  <input type="text" hidden name="obrero" value=<%= foo[i].direccion %>></input>
+                  <input type="text" hidden name="fecha" value=<%= new Date().getDay() %>></input>
                   <input type="text" hidden name="hora" value=<%= new Date().getHours() %>></input>
-                  <input type="number" hidden name="latitud" value=<%= foo[i].lat %>></input>
-                  <input type="number" hidden name="longitud" value=<%= foo[i].long %>></input>
-                  <input class= "userLatitud" type="number" step="0.0000001" name="userLatitud"></input>
-                  <input class= "userLongitud" type="number" step="0.0000001" name="userLongitud"></input>
+                  <input type="text" hidden name="nuevo" value=-0.12></input>
                   <div class="btn-group">
                     <button type="submit" class="btn btn-sm btn-outline-secondary">Dar Asistencia</button>
                   </div>
@@ -204,7 +155,7 @@
 
     <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 
-
+      
   </body>
 </html>
 >
