@@ -12,4 +12,6 @@ router.get('/', dashboardController.mostrarDB);
 router.get('/nuevo-usuario', newUserController.nuevoUsuario);
 router.get('/nueva-obra', nuevaObraController.nuevaObra);
 
+router.post('/nuevo-usuario', newUserController.crearUsuario);
+
 module.exports = router;

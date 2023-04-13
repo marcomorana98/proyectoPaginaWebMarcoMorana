@@ -118,20 +118,29 @@
       </div>
     </nav>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-          <h1 class="h2">Nuevo Obrero</h1>
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Nuevo Obrero</h1>
           
-        </div>
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <form>
-                <input type="text" placeholder="Nombre">
-                <input type="text" placeholder="Apellido">
-                <input type="text" placeholder="Legajo">
-                <button>Registrar</button>
-              </form>
-        </div>
+      </div>
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <form action="" method="POST">
+            <div>
+              <label>Nombre:</label>
+              <input type="text" placeholder="Nombre" name="nombre" required>
+            </div>
+            <div>
+              <label>Apellido:</label>
+              <input type="text" placeholder="Apellido" name="apellido" required>
+            </div>
+            <div>
+              <label>Legajo:</label>
+              <input type="text" placeholder="Legajo" name="legajo" required>
+            </div>
+            <button type="submit">Registrar</button>
+          </form>
+      </div>
         
-      </main>
+    </main>
 
   </div>
 </div>
