@@ -35,7 +35,4 @@ app.use('/dashboard', dashboardRouter);
 
 app.use('/obras', albumRouter);
 
-
-
 app.listen(3000)
-  
