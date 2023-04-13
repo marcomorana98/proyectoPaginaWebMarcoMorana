@@ -13,20 +13,13 @@ const controller = {
       let nombre = req.body.nombre;
       let apellido = req.body.apellido;
       let legajo = req.body.legajo;
-      let id = x;
-      connection.query('SELECT idUsuarios FROM usuarios', function(error, results, fields){
-        if(results[(results.length)-1]<0 || results[(results.length)-1]==0){
-          x=1
-        }else{
-          x=results[(results.length)-1] + 1;
-        }
-      })
       let username = nombre[0] + apellido;
+      let id;
 
-      console.log(nombre + + apellido + +legajo + + id + + username);
+      console.log(nombre + " " + apellido + " " + legajo + " " + username);
 
       connection.query('INSERT INTO usuarios VALUES (?, ?, ?, ?, ?, ?, ?)', [id, username, legajo, 0, nombre, apellido, legajo], function(error, results, fields) {
-        res.end();
+        res.redirect('/dashboard/nuevo-usuario');
       })
     },
 }
