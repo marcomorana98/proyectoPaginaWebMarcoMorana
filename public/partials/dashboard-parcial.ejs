@@ -1,0 +1,47 @@
+<% function mostrarObras(){ %>
+    <% var asistenciasActuales = []; %>
+    <% var fechaTest = new Date(2023,03,16); %>
+    <%  var obras = []; %>
+    <% for(var j = 0; foo.length >j; j++){ %>
+      <% console.log("Entra al for."); %>
+      <% if(foo[j].fecha.toDateString() == fechaTest.toDateString()){ %>
+        <% console.log("Entra al if"); %>
+        <% asistenciasActuales.push(foo[j]); %>
+        <% }else{ %>
+          <% console.log(foo[j].fecha); %>
+          <% console.log(fechaTest); } %>
+    <% } %>
+    <%  for(var i=0; asistenciasActuales.length>i; i++){ %>
+      <%  if(!obras.includes(asistenciasActuales[i].direccion)){ %>
+          <% obras.push(asistenciasActuales[i].direccion) %>
+      <% } %>
+    <% } %>
+    <% for(var i=0; obras.length>i; i++){ %>
+      <div class="table-responsive">
+          <h2><%= obras[i] %></h2>
+          <table class="table table-striped table-sm">
+            <thead>
+              <tr>
+                <th scope="col">Legajo</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Hora de entrada</th>
+                <th scope="col">Hora de salida</th>
+              </tr>
+            </thead>
+            <tbody>
+          <% for(var j=0; asistenciasActuales.length>j; j++){ %>
+              <% if(asistenciasActuales[j].direccion==obras[i]){ %>
+                  <tr>
+                      <td><%= asistenciasActuales[j].legajo %></td>
+                      <td><%= asistenciasActuales[j].nombre %></td>
+                      <td><%= asistenciasActuales[j].entrada %></td>
+                      <td><%= asistenciasActuales[j].salida %></td>
+                  </tr>
+
+          <% } %>
+      <% } %>
+          </tbody>
+      </table>
+  </div>
+  <% } %>
+<% } %>

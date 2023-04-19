@@ -113,21 +113,28 @@
     <div class="container">
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <% for(var i=0;i<foo.length; i++){ %>
+        <% for(var i=0;i<obras.length; i++){ %>
         <div class="col">
           <div class="card shadow-sm">
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
             <div class="card-body">
-              <p class="card-text"><%= foo[i].direccion %> <%= foo[i].altura %></p>
+              <p class="card-text"><%= obras[i].direccion %> <%= obras[i].altura %></p>
               <div class="boton-de-asistencia">
                 <form action = "obras" method = "POST">
-                  <input type="text" hidden name="obra" value=<%= foo[i].direccion %>></input>
-                  <input type="text" hidden name="obrero" value=<%= foo[i].direccion %>></input>
-                  <input type="text" hidden name="fecha" value=<%= new Date().getDay() %>></input>
-                  <input type="text" hidden name="hora" value=<%= new Date().getHours() %>></input>
+                  <input type="text" hidden name="obra" value=<%= obras[i].idObra %>></input>
+                  <input type="text" hidden name="obrero" value=<%= obrero %>></input>
                   <input type="text" hidden name="nuevo" value=-0.12></input>
                   <div class="btn-group">
-                    <button type="submit" class="btn btn-sm btn-outline-secondary">Dar Asistencia</button>
+                    <% let arAux = asistido.find((o) => o.idobra === obras[i].idObra);%>
+                    <% if(arAux == undefined){%>
+                      <button type="submit" class="btn btn-sm btn-outline-secondary">Dar Asistencia</button>
+                    <% } %>
+                    <% if(arAux != undefined && arAux.horaSalida == '00:00:00'){ %>
+                      <button type="submit" class="btn btn-sm btn-outline-secondary">Dar Baja</button>
+                    <% } %>
+                    <% if(arAux != undefined && arAux.horaSalida != '00:00:00'){ %>
+                      <p>Ya asistio a esta obra el dia de hoy<p>
+                    <% } %>
                   </div>
                 </form>
               </div>
