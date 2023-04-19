@@ -21,6 +21,7 @@ app.use(session({
 	resave: true,
 	saveUninitialized: true
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -112,5 +113,4 @@ app.post('/login', (req, res) => {
     }
   });
 
-app.listen(3000)
-  
+app.listen(3000) 

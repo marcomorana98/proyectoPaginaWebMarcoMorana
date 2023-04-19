@@ -6,7 +6,6 @@ app.set('views', path.join(__dirname, 'views'));
 
 const controller = {
     nuevaObra: function(request, res) {
-        
         res.render('nuevaObra');
     },
 }
