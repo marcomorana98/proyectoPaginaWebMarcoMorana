@@ -15,9 +15,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 
 global.connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "MySQLPassword1.",
+  host: "190.173.94.235",
+  user: "worker",
+  password: "123",
   database: "karpathia",
 });
 
