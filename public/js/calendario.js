@@ -2,7 +2,6 @@ const daysTag = document.querySelector(".days"),
   currentDate = document.querySelector(".current-date"),
   prevNextIcon = document.querySelectorAll(".icons span");
 let currentDay;
-let changedMonth = false;
 // getting new date, current year and month
 let date = new Date(),
   currYear = date.getFullYear(),
@@ -34,12 +33,12 @@ const renderCalendar = () => {
   }
   for (let i = 1; i <= lastDateofMonth; i++) {
     // creating li of all days of current month
-    // adding active class to li if the current day, month, and year matched
+    // da la clase de hoy al dia de hoy
     let isToday =
       i === date.getDate() &&
       currMonth === new Date().getMonth() &&
       currYear === new Date().getFullYear()
-        ? "active"
+        ? "hoy"
         : "";
     liTag += `<li class="day ${isToday}" onClick="crearDiv(this)">${i}</li>`;
   }
@@ -49,10 +48,6 @@ const renderCalendar = () => {
   }
   currentDate.innerText = `${months[currMonth]} ${currYear}`; // passing current mon and yr as currentDate text
   daysTag.innerHTML = liTag;
-  if (!changedMonth) {
-    console.log(document.querySelector(".day.active"));
-    crearDiv(document.querySelector(".day.active"));
-  }
 };
 
 renderCalendar();
@@ -93,117 +88,73 @@ function getObras(currentDay) {
       console.log(error);
     });
 }
-getObras();
+
 async function crearDiv(ele) {
+  // borra los div con clase "temp"
   let borrarDiv = document.querySelectorAll(".temp");
   borrarDiv.forEach((elem) => elem.parentNode.removeChild(elem));
 
+  // borra la clase "active" a los elementos con la clase "day"
   let borrarActivos = document.querySelectorAll(".day");
   borrarActivos.forEach((elem) => elem.classList.remove("active"));
 
+  // agrega la clase "active"
   ele.classList.add("active");
 
+  // le da el valor del boton presionado a currentDay y lo manda a getObras para que nos de el contenido de la tabla de ese dia
   currentDay = currYear + "-" + (currMonth + 1) + "-" + ele.innerHTML;
   const delDia = await getObras(currentDay);
-  console.log(delDia);
+
+  // tomamos el main con id "main" para insertarle las estructuras
   let main = document.getElementById("main");
-  let divReferencia = document.getElementById("ref");
-  let calendario = document.getElementById("calendar");
 
-  let obras = [];
-  for (let i = 0; delDia.length > i; i++) {
-    if (!obras.includes(delDia[i].direccion)) {
-      obras.push(delDia[i].direccion);
-    }
-  }
-  console.log(obras);
-  let newDiv;
-  for (let i = 0; obras.length > i; i++) {
-    newDiv = document.createElement("div");
-    newDiv.classList.add("table-responsive", "temp");
-    let newH2 = document.createElement("h2");
-    newH2.appendChild(document.createTextNode(obras[i]));
-    newDiv.appendChild(newH2);
-    let newTable = document.createElement("table");
-    newTable.classList.add("table", "table-striped", "table-sm");
-    let tHead = document.createElement("thead");
-    let row = tHead.insertRow();
-    for (let j = 0; j < 4; j++) {
-      const cell = row.insertCell();
-      cell.setAttribute("scope", "col");
-      switch (j) {
-        case 0:
-          cell.appendChild(document.createTextNode("Legajo"));
-          break;
-        case 1:
-          cell.appendChild(document.createTextNode("Nombre"));
-          break;
-        case 2:
-          cell.appendChild(document.createTextNode("Hora de entrada"));
-          break;
-        case 3:
-          cell.appendChild(document.createTextNode("Hora de salida"));
-          break;
-      }
-    }
-    newTable.appendChild(tHead);
-    let tBody = document.createElement("tbody");
-    newTable.appendChild(tBody);
-    /*    <div class="table-responsive">
-                <h2> obras[i] </h2>
-                <table class="table table-striped table-sm">
-                    <thead>
-                        <tr>
-                        <th scope="col">Legajo</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Hora de entrada</th>
-                        <th scope="col">Hora de salida</th>
-                        </tr>
-                    </thead>
-                    <tbody> */
-    for (let k = 0; delDia.length > k; k++) {
-      if (delDia[k].direccion == obras[i]) {
-        let row2 = tBody.insertRow();
-        for (let a = 0; a < 4; a++) {
-          const cell = row2.insertCell();
-          switch (a) {
-            case 0:
-              cell.appendChild(document.createTextNode(delDia[k].legajo));
-              break;
-            case 1:
-              cell.appendChild(document.createTextNode(delDia[k].nombre));
-              break;
-            case 2:
-              cell.appendChild(document.createTextNode(delDia[k].entrada));
-              break;
-            case 3:
-              cell.appendChild(document.createTextNode(delDia[k].salida));
-              break;
-          }
-        }
-        /*     <tr>
-                                <td> asistencias[j].legajo</td>
-                                <td> asistencias[j].nombre</td>
-                                <td> asistencias[j].entrada</td>
-                                <td> asistencias[j].salida</td>
-                            </tr> */
-      }
-    }
-    newDiv.appendChild(newTable);
-  }
-  main.insertBefore(newDiv, divReferencia);
-  /* </tbody>
-            </table>
-        </div> */
+  // funcion que arma el objeto con el contenido de la tabla
+  let reducer = function (acc, { direccion, ...resto }) {
+    if (!acc[direccion]) acc[direccion] = [resto];
+    else acc[direccion].push(resto);
+
+    return acc;
+  };
+
+  let resultado = delDia.reduce(reducer, {});
+
+  // toma el objeto creado con el reduce y utiliza sus datos para crear el div que mostrara los datos en el HTML
+  const newDiv = Object.keys(resultado)
+    .map(
+      (key) =>
+        `
+        <div class= "table-responsive temp">
+          <h2> ${key}</h2>
+          <table class="table table-striped table-sm"> 
+            <thead>
+              <tr>
+              <th scope="col">Legajo</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Hora de entrada</th>
+              <th scope="col">Hora de salida</th>
+              </tr>
+             </thead>
+             <tbody>${resultado[key]
+               .map(
+                 (empleado) =>
+                   `
+              <tr>
+                <td> ${empleado.legajo}</td>
+                <td> ${empleado.nombre}</td>
+                <td> ${empleado.entrada}</td>
+                <td> ${empleado.salida}</td>
+              </tr>
+             `
+               )
+               .join("")}</tbody>
+          </table>
+        </div>
+      `
+    )
+    .join("");
+
+  main.insertAdjacentHTML("beforeend", newDiv);
 }
 
-function mostrarObras() {
-  document.querySelector("#obras").innerHTML = "";
-}
-
-/*const days = document.querySelectorAll(".day");
-days.forEach(day => {
-    day.addEventListener("click", () => {selectDay(day)});
-    day.addEventListener("click", () => {mostrarObras()});
-})
-*/
+// toma el elemento con la clase "hoy" y le aplica la funcion de crearDiv (muestra los datos del dia de hoy en el HTML)
+crearDiv(document.querySelector(".hoy"));

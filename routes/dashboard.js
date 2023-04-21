@@ -7,7 +7,6 @@ const path = require("path");
 const dashboardController = require("../controllers/dashboardController");
 const newUserController = require("../controllers/newUserController");
 const nuevaObraController = require("../controllers/nuevaObraController");
-const calendarConnection = require("../controllers/calendarConnection");
 
 router.get("/", dashboardController.mostrarDashboard);
 router.get("/nuevo-usuario", newUserController.nuevoUsuario);
