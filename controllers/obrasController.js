@@ -6,6 +6,7 @@ app.set("views", path.join(__dirname, "views"));
 var { format } = require("date-fns");
 
 const controller = {
+  //Verifica las obras existentes y si el obrero ya dio el presente hoy muestra el boton dar salida en vez del dar asistencia
   mostrarObras: function (req, res) {
     connection.query(
       "SELECT * FROM obras",
@@ -46,6 +47,7 @@ const controller = {
     );
   },
 
+  //Ingresa la asistencia a la DB con los datos del obrero y si esto da error se asume que ya habia dado asistencia por lo que da la salida del dia. Si ya se dio la salida no se volvera a mostrar el boton por lo que no entra en un loop
   asistirAObra: function (req, res) {
     let bandera = 0;
     let { obra, obrero, nuevo } = req.body;

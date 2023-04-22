@@ -14,6 +14,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 
+//Conexion a la DB
 global.connection = mysql.createConnection({
   host: "190.173.94.235",
   user: "worker",
@@ -21,6 +22,7 @@ global.connection = mysql.createConnection({
   database: "karpathia",
 });
 
+//Crea la sesion
 app.use(
   session({
     secret: "secret",
